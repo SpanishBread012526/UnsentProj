@@ -206,8 +206,41 @@ document.getElementById('popup').addEventListener('click', (e) => {
       alert("Someone from " + data.city + ", " + data.country_name + " visited!");
     });
 </script>
+    
+<script type="module">
+  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+  // your firebase config
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    databaseURL: "YOUR_DB_URL",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // log visitor
+  fetch("https://ipapi.co/json/")
+    .then(response => response.json())
+    .then(data => {
+      const visitRef = push(ref(db, "visits"));
+      set(visitRef, {
+        city: data.city,
+        country: data.country_name,
+        ip: data.ip,
+        time: new Date().toISOString()
+      });
+    });
+</script>
 
 
 </body>
 </html>
+
 

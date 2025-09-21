@@ -191,7 +191,7 @@ db.ref('messages').on('child_added', snapshot => {
     div.style.transform = `rotate(${Math.random()*4-2}deg)`; // random tilt
 
     div.innerHTML = `
-        <strong>To ${data.name}</strong>
+        <strong>To ${data.name}:</strong>
         ${data.message}
         <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
     `;
@@ -228,3 +228,4 @@ document.getElementById('popup').addEventListener('click', (e) => {
 
 </body>
 </html>
+

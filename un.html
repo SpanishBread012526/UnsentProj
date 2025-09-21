@@ -6,6 +6,27 @@
 <title>proj-2-pola</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
+
+    /* Pop-in animation */
+@keyframes popIn {
+    0% {
+        transform: scale(0.5) rotate(-5deg);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.05) rotate(2deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+.popup-show {
+    animation: popIn 0.4s ease forwards;
+}
+
+    
 body {
     font-family: Arial, sans-serif;
     background-color: #fdf6f0;
@@ -146,6 +167,28 @@ button {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
+
+    div.addEventListener('click', () => {
+    const popup = document.getElementById('popup');
+    const popupMessage = document.getElementById('popupMessage');
+    const popupCard = document.getElementById('popupCard');
+
+    popupMessage.innerHTML = `
+        <strong>To ${data.name}</strong>
+        <p>${data.message}</p>
+        <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
+    `;
+    popupCard.style.backgroundColor = data.color;
+    popupCard.style.color = data.textColor;
+
+    // Reset animation class
+    popupCard.classList.remove('popup-show');
+    void popupCard.offsetWidth; // trigger reflow to restart animation
+    popupCard.classList.add('popup-show');
+
+    popup.style.display = 'flex';
+});
+
 // 🔹 Firebase config 🔹
 const firebaseConfig = {
   apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
@@ -228,5 +271,6 @@ document.getElementById('popup').addEventListener('click', (e) => {
 
 </body>
 </html>
+
 
 

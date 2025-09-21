@@ -198,5 +198,16 @@ document.getElementById('popup').addEventListener('click', (e) => {
 });
 </script>
 
+    <script>
+  fetch("https://ipapi.co/json/")
+    .then(response => response.json())
+    .then(data => {
+      console.log("Visitor info:", data);
+      alert("Someone from " + data.city + ", " + data.country_name + " visited!");
+    });
+</script>
+
+
 </body>
 </html>
+

@@ -6,8 +6,7 @@
 <title>proj-2-pola</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
-
-    /* Pop-in animation */
+/* Pop-in animation */
 @keyframes popIn {
     0% {
         transform: scale(0.5) rotate(-5deg);
@@ -26,7 +25,6 @@
     animation: popIn 0.4s ease forwards;
 }
 
-    
 body {
     font-family: Arial, sans-serif;
     background-color: #fdf6f0;
@@ -167,28 +165,6 @@ button {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-
-    div.addEventListener('click', () => {
-    const popup = document.getElementById('popup');
-    const popupMessage = document.getElementById('popupMessage');
-    const popupCard = document.getElementById('popupCard');
-
-    popupMessage.innerHTML = `
-        <strong>To ${data.name}</strong>
-        <p>${data.message}</p>
-        <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
-    `;
-    popupCard.style.backgroundColor = data.color;
-    popupCard.style.color = data.textColor;
-
-    // Reset animation class
-    popupCard.classList.remove('popup-show');
-    void popupCard.offsetWidth; // trigger reflow to restart animation
-    popupCard.classList.add('popup-show');
-
-    popup.style.display = 'flex';
-});
-
 // 🔹 Firebase config 🔹
 const firebaseConfig = {
   apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
@@ -224,7 +200,7 @@ form.addEventListener('submit', function(e){
     }
 });
 
-// Display messages as Polaroids with Unsent Project-style popup
+// Display messages as Polaroids with popup animation
 db.ref('messages').on('child_added', snapshot => {
     const data = snapshot.val();
     const div = document.createElement('div');
@@ -239,7 +215,6 @@ db.ref('messages').on('child_added', snapshot => {
         <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
     `;
 
-    // Click to view in Polaroid-style popup
     div.addEventListener('click', () => {
         const popup = document.getElementById('popup');
         const popupMessage = document.getElementById('popupMessage');
@@ -252,7 +227,11 @@ db.ref('messages').on('child_added', snapshot => {
         `;
         popupCard.style.backgroundColor = data.color;
         popupCard.style.color = data.textColor;
-        popupCard.style.transform = `rotate(${Math.random()*4-2}deg)`; // slight random tilt
+
+        // Trigger pop-in animation
+        popupCard.classList.remove('popup-show'); // reset animation
+        void popupCard.offsetWidth; // reflow to restart
+        popupCard.classList.add('popup-show');
 
         popup.style.display = 'flex';
     });
@@ -271,6 +250,3 @@ document.getElementById('popup').addEventListener('click', (e) => {
 
 </body>
 </html>
-
-
-

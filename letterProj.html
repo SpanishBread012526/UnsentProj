@@ -192,8 +192,10 @@ button:hover { background-color: #84343c; }
   position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  width: 95vw;
-  height: 90vh;
+  width: 80vw;
+  height: 70vh;
+  max-width: 500px;
+  max-height: 600px;
   z-index: 1000;
   border-radius: 12px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
@@ -203,7 +205,20 @@ button:hover { background-color: #84343c; }
   transform: rotateX(180deg);
 }
 
-.letter-content h3 { margin-bottom: 10px; }
+.envelope.open-full .letter-content {
+  padding: 25px;
+  font-size: 18px;
+  overflow-y: auto;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .envelope.open-full .letter-content {
+    font-size: 22px;  /* larger for phones */
+    padding: 20px;
+  }
+}
+
 .letter-content .greeting { margin-bottom: 15px; font-style: italic; }
 .letter-content .body { margin-bottom: 20px; }
 .letter-content .signature { text-align: right; font-weight: bold; margin-top: 20px; }
@@ -220,11 +235,6 @@ button:hover { background-color: #84343c; }
 }
 
 .fold-btn:hover { background-color: #84343c; }
-
-@media (max-width: 400px) {
-  .envelope { width: 140px; height: 90px; }
-  .envelope.open-full .letter-content { font-size: 16px; }
-}
 </style>
 </head>
 

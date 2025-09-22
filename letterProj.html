@@ -163,11 +163,12 @@ button:hover { background-color: #84343c; }
   border-top-right-radius: 8px;
 }
 
+/* Polaroid-style letter content */
 .envelope .letter-content {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: #fffefc; /* simple paper color */
+  background: #fffefc;
   padding: 10px;
   box-sizing: border-box;
   transform: translateY(40px) scale(0.8);
@@ -176,10 +177,11 @@ button:hover { background-color: #84343c; }
   overflow-wrap: break-word;
   word-wrap: break-word;
   overflow: hidden;
-  font-size: 14px;
-  transition: all 0.6s ease-in-out;
-  line-height: 1.5em;
+  font-size: 24px; /* desktop base */
+  line-height: 1.8em;
+  text-align: center;
   font-family: 'Sacramento', cursive;
+  transition: all 0.6s ease-in-out;
 }
 
 .letter-content.visible {
@@ -206,16 +208,17 @@ button:hover { background-color: #84343c; }
 }
 
 .envelope.open-full .letter-content {
-  padding: 25px;
-  font-size: 18px;
+  padding: 30px;
+  font-size: 28px; /* readable on phones */
   overflow-y: auto;
+  line-height: 1.8em;
 }
 
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .envelope.open-full .letter-content {
-    font-size: 22px;  /* larger for phones */
-    padding: 20px;
+    font-size: 32px;  /* bigger for phones */
+    padding: 25px;
   }
 }
 

@@ -59,7 +59,6 @@ window.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Open letter smoothly
     const envelope = env.querySelector(".envelope");
     envelope.addEventListener("click", e => {
       if (!e.target.classList.contains("fold-btn")) {
@@ -68,7 +67,6 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Fold/close letter with smooth animation
     env.querySelector(".fold-btn").addEventListener("click", e => {
       e.stopPropagation();
       const content = env.querySelector(".letter-content");
@@ -124,18 +122,13 @@ button:hover { background-color: #84343c; }
   margin-top: 25px;
 }
 
-/* Envelope wrapper including recipient */
-.envelope-wrapper {
-  text-align: center;
-}
-
+.envelope-wrapper { text-align: center; }
 .recipient {
   font-weight: bold;
   margin-bottom: 5px;
   color: #6a3e3e;
 }
 
-/* Envelope styling */
 .envelope {
   width: 180px;
   height: 110px;
@@ -148,9 +141,7 @@ button:hover { background-color: #84343c; }
   transition: transform 0.6s;
 }
 
-.envelope:hover .flap {
-  transform: rotateX(-10deg);
-}
+.envelope:hover .flap { transform: rotateX(-10deg); }
 
 .envelope .flap {
   position: absolute;
@@ -163,7 +154,7 @@ button:hover { background-color: #84343c; }
   border-top-right-radius: 8px;
 }
 
-/* Polaroid-style letter content */
+/* Polaroid-style letter content, scales with screen */
 .envelope .letter-content {
   position: absolute;
   top: 0; left: 0;
@@ -177,8 +168,8 @@ button:hover { background-color: #84343c; }
   overflow-wrap: break-word;
   word-wrap: break-word;
   overflow: hidden;
-  font-size: 24px; /* desktop base */
-  line-height: 1.8em;
+  font-size: 6vw; /* scales naturally on phones */
+  line-height: 1.6em;
   text-align: center;
   font-family: 'Sacramento', cursive;
   transition: all 0.6s ease-in-out;
@@ -189,35 +180,33 @@ button:hover { background-color: #84343c; }
   opacity: 1;
 }
 
-/* Fullscreen letter */
 .envelope.open-full {
   position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  width: 80vw;
-  height: 70vh;
-  max-width: 500px;
-  max-height: 600px;
+  width: 90vw;
+  height: 80vh;
+  max-width: 600px;
+  max-height: 700px;
   z-index: 1000;
   border-radius: 12px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
-.envelope.open-full .flap {
-  transform: rotateX(180deg);
-}
-
+.envelope.open-full .flap { transform: rotateX(180deg); }
 .envelope.open-full .letter-content {
-  padding: 30px;
-  font-size: 28px; /* readable on phones */
+  padding: 5vw;
+  font-size: 6vw;
   overflow-y: auto;
-  line-height: 1.8em;
+  line-height: 1.6em;
 }
 
-/* Mobile adjustments */
-@media (max-width: 480px) {
+/* Desktop adjustments */
+@media (min-width: 480px) {
   .envelope.open-full .letter-content {
-    font-size: 32px;  /* bigger for phones */
+    font-size: 24px;
+    width: 80vw;
+    height: 70vh;
     padding: 25px;
   }
 }

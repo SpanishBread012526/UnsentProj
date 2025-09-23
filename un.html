@@ -124,7 +124,7 @@ button {
 <form id="messageForm">
     <input type="text" id="name" placeholder="to whoo??" required>
     <textarea id="message" placeholder="msgg heerree !!" required></textarea>
-    <input type="text" id="fromName" placeholder="from??" required> <!-- ⭐ added required -->
+    <input type="text" id="fromName" placeholder="from??" required>
     <input type="color" id="color" value="#ffcccc"> Background Color
     <input type="color" id="textColor" value="#333333"> Text Color
     <button type="submit">submit !!</button>
@@ -194,7 +194,7 @@ db.ref('messages').on('child_added', snapshot => {
     div.innerHTML = `
         <strong>To ${data.name}:</strong>
         ${data.message}
-        ${data.fromName ? `<br><div class="signature">From: ${data.fromName}</div>` : ""}
+        ${data.fromName ? `<br><div class="signature">— ${data.fromName}</div>` : ""}
         <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
     `;
 
@@ -206,7 +206,7 @@ db.ref('messages').on('child_added', snapshot => {
         popupMessage.innerHTML = `
             <strong>To ${data.name}</strong>
             <p>${data.message}</p>
-            ${data.fromName ? `<p class="signature">From: ${data.fromName}</p>` : ""}
+            ${data.fromName ? `<p class="signature">— ${data.fromName}</p>` : ""}
             <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
         `;
         popupCard.style.backgroundColor = data.color;

@@ -1,252 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>proj-2-pola</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>proj-2-pola — gentle gate</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
+/* ====== animations ====== */
 @keyframes popIn {
-    0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
-    70% { transform: scale(1.05) rotate(2deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+  70% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 .popup-show { animation: popIn 0.4s ease forwards; }
 
+@keyframes fadeInSoft {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ====== main styles ====== */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #fdf6f0;
-    margin: 20px;
-    padding: 10px;
-    color: #333;
+  font-family: Arial, sans-serif;
+  background-color: #fdf6f0;
+  margin: 20px;
+  padding: 10px;
+  color: #333;
+  transition: background-color 0.6s ease;
 }
-h1 {
-    text-align: center;
-    color: #b34747;
-    font-size: 1.8em;
-}
-form {
-    margin-bottom: 25px;
-}
+h1 { text-align: center; color: #b34747; font-size: 1.8em; }
+form { margin-bottom: 25px; }
 input, textarea, button {
-    font-size: 16px;
-    padding: 10px;
-    margin-bottom: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  font-size: 16px; padding: 10px; margin-bottom: 8px;
+  width: 100%; box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc;
 }
-button {
-    cursor: pointer;
-    background-color: #b34747;
-    color: white;
-    border: none;
-}
-#messagesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-}
+button { cursor: pointer; background-color: #b34747; color: white; border: none; }
+#messagesContainer { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
 .messageTile {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom: 20px solid #fff;
-    border-radius: 5px;
-    box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
-    padding: 15px;
-    width: 90%;
-    max-width: 300px;
-    font-family: 'Patrick Hand', cursive;
-    position: relative;
-    transition: transform 0.2s;
-    word-wrap: break-word;
-    cursor: pointer;
+  background-color: #fff; border: 1px solid #ddd; border-bottom: 20px solid #fff;
+  border-radius: 5px; box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
+  padding: 15px; width: 90%; max-width: 300px;
+  font-family: 'Patrick Hand', cursive;
+  position: relative; transition: transform 0.2s;
+  word-wrap: break-word; cursor: pointer;
 }
 .messageTile:hover { transform: rotate(-1.5deg) scale(1.02); }
 .messageTile strong { display: block; margin-bottom: 8px; }
-.timestamp {
-    text-align: right;
-    font-size: 12px;
-    color: #555;
-    margin-top: 10px;
-    word-break: break-word;
-}
-.signature {
-    font-size: 14px;
-    font-style: italic;
-    margin-top: 6px;
-}
-@media (min-width: 500px) { .messageTile { width: 45%; } }
-@media (min-width: 800px) { .messageTile { width: 30%; } }
+.timestamp { text-align: right; font-size: 12px; color: #555; margin-top: 10px; word-break: break-word; }
+.signature { font-size: 14px; font-style: italic; margin-top: 6px; }
+@media (min-width:500px){ .messageTile{ width:45%; } } 
+@media (min-width:800px){ .messageTile{ width:30%; } }
 
-#popup {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center; align-items: center;
-    z-index: 1000;
-}
+/* ====== popup ====== */
+#popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
 #popupCard {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom: 20px solid #fff;
-    border-radius: 5px;
-    box-shadow: 2px 2px 20px rgba(0,0,0,0.3);
-    padding: 20px;
-    width: 90%;
-    max-width: 320px;
-    font-family: 'Patrick Hand', cursive;
-    transform: rotate(-2deg);
-    cursor: default;
-    position: relative;
-    word-wrap: break-word;
+  background-color:#fff; border:1px solid #ddd; border-bottom:20px solid #fff;
+  border-radius:5px; box-shadow:2px 2px 20px rgba(0,0,0,0.3);
+  padding:20px; width:90%; max-width:320px;
+  font-family:'Patrick Hand', cursive; transform:rotate(-2deg);
+  position:relative; word-wrap:break-word;
 }
-#popupClose {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 22px;
-    cursor: pointer;
-}
+#popupClose { position:absolute; top:10px; right:15px; font-size:22px; cursor:pointer; }
 #popupMessage { white-space: pre-wrap; }
+
+/* ====== gate ====== */
+#gateOverlay {
+  position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(180deg, rgba(253,246,240,0.98), rgba(250,244,249,0.98));
+  z-index:2000; font-family:'Patrick Hand', cursive;
+}
+#gateBox {
+  width: 92%; max-width:420px; background: #fff; border-radius: 12px; padding: 24px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15); text-align:center;
+  border: 1px solid #f0e6e8; animation: fadeInSoft 0.6s ease;
+}
+#gateBox h2 { margin:0 0 8px 0; color:#7a2f2f; font-size:20px; }
+#gateBox p { margin: 0 0 12px 0; color:#6b4a4a; }
+#secretInput {
+  width:100%; padding:10px; border-radius:8px; border:1px solid #e0cbd0;
+  text-align:center; font-size:16px;
+}
+#gateMsg { color:crimson; margin-top:10px; min-height:1.2em; }
+#gateButtons { margin-top:12px; display:flex; gap:8px; justify-content:center; }
+.gBtn { padding:8px 14px; border-radius:8px; border:none; cursor:pointer;
+  background:#b34747; color:white; transition:opacity 0.3s ease; }
+.gBtn:hover { opacity:0.8; }
+.gBtn.secondary { background:#e6cbd0; color:#5b2b2b; }
+.hidden { display:none !important; }
+.fade-in { animation: fadeInSoft 0.7s ease forwards; }
 </style>
 </head>
 <body>
 
-<h1>replica-trial</h1>
-
-<form id="messageForm">
-    <input type="text" id="name" placeholder="to whoo??" required>
-    <textarea id="message" placeholder="msgg heerree !!" required></textarea>
-    <input type="text" id="fromName" placeholder="from??" required>
-    <input type="color" id="color" value="#ffcccc"> Background Color
-    <input type="color" id="textColor" value="#333333"> Text Color
-    <button type="submit">submit !!</button>
-</form>
-
-<div id="messagesContainer"></div>
-
-<div id="popup">
-    <div class="popupContent" id="popupCard">
-        <span id="popupClose">&times;</span>
-        <div id="popupMessage"></div>
+<!-- GATE -->
+<div id="gateOverlay">
+  <div id="gateBox">
+    <h2>“Whisper the word that opens the world.”</h2>
+    <p>Only those who remember may step through.</p>
+    <input id="secretInput" type="password" placeholder="enter secret word" autocomplete="off" />
+    <div id="gateButtons">
+      <button class="gBtn" id="enterBtn">Enter</button>
+      <button class="gBtn secondary" id="cancelBtn">Leave</button>
     </div>
+    <div id="gateMsg"></div>
+  </div>
 </div>
 
-<!-- 🌼 password gate -->
-<script>
-  const secretWord = "magnolia"; // change this to your secret word
-  const entered = prompt("enter the key to view the project:");
-  if (entered !== secretWord) {
-    document.body.innerHTML = "<h2 style='text-align:center;margin-top:40vh;font-family:sans-serif;'>Access denied.</h2>";
-    throw new Error("access denied");
-  }
-</script>
+<!-- MAIN CONTENT -->
+<div id="mainContent" class="hidden">
+  <h1>replica-trial</h1>
+
+  <form id="messageForm">
+      <input type="text" id="name" placeholder="to whoo??" required>
+      <textarea id="message" placeholder="msgg heerree !!" required></textarea>
+      <input type="text" id="fromName" placeholder="from??" required>
+      <input type="color" id="color" value="#ffcccc"> Background Color
+      <input type="color" id="textColor" value="#333333"> Text Color
+      <button type="submit">submit !!</button>
+  </form>
+
+  <div id="messagesContainer"></div>
+
+  <div id="popup">
+      <div id="popupCard">
+          <span id="popupClose">&times;</span>
+          <div id="popupMessage"></div>
+      </div>
+  </div>
+</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
-  authDomain: "project-18561.firebaseapp.com",
-  databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
-  projectId: "project-18561",
-  storageBucket: "project-18561.firebasestorage.app",
-  messagingSenderId: "113928961968",
-  appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const messagesContainer = document.getElementById('messagesContainer');
-const form = document.getElementById('messageForm');
+const allowedSecrets = ["magnolia","spanishbread","naps","nanami","ok"];
 
-form.addEventListener('submit', function(e){
+const gateOverlay = document.getElementById('gateOverlay');
+const secretInput = document.getElementById('secretInput');
+const gateMsg = document.getElementById('gateMsg');
+const mainContent = document.getElementById('mainContent');
+
+document.getElementById('enterBtn').addEventListener('click', attemptUnlock);
+document.getElementById('cancelBtn').addEventListener('click', () => {
+  document.body.innerHTML = "<h2 style='text-align:center;margin-top:40vh;font-family:sans-serif;'>Goodbye.</h2>";
+});
+secretInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); attemptUnlock(); }
+});
+
+function attemptUnlock(){
+  const val = (secretInput.value||"").trim();
+  if(!val){ gateMsg.textContent="Please say something first."; return; }
+  if(!allowedSecrets.includes(val)){
+    gateMsg.textContent="That word does not open this gate.";
+    secretInput.value=""; secretInput.focus(); return;
+  }
+  // Unlock
+  gateOverlay.style.display='none';
+  mainContent.classList.remove('hidden');
+  mainContent.classList.add('fade-in');
+  initFirebaseAndLoad();
+}
+
+/* Initialize Firebase after unlock */
+function initFirebaseAndLoad(){
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
+    authDomain: "project-18561.firebaseapp.com",
+    databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
+    projectId: "project-18561",
+    storageBucket: "project-18561.firebasestorage.app",
+    messagingSenderId: "113928961968",
+    appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
+  };
+  try { firebase.initializeApp(firebaseConfig); } catch(e){ console.warn(e); }
+  const db = firebase.database();
+  const form = document.getElementById('messageForm');
+  const messagesContainer = document.getElementById('messagesContainer');
+
+  form.addEventListener('submit', e=>{
     e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const message = document.getElementById('message').value.trim();
-    const fromName = document.getElementById('fromName').value.trim();
-    const color = document.getElementById('color').value;
-    const textColor = document.getElementById('textColor').value;
-
-    if(name && message && fromName){
-        db.ref('messages').push({
-            name,
-            message,
-            fromName,
-            color,
-            textColor,
-            timestamp: Date.now()
-        });
-        form.reset();
+    const name=document.getElementById('name').value.trim();
+    const msg=document.getElementById('message').value.trim();
+    const from=document.getElementById('fromName').value.trim();
+    const color=document.getElementById('color').value;
+    const textColor=document.getElementById('textColor').value;
+    if(name && msg && from){
+      db.ref('messages').push({name,message:msg,fromName:from,color,textColor,timestamp:Date.now()});
+      form.reset();
     }
-});
+  });
 
-db.ref('messages').on('child_added', snapshot => {
-    const data = snapshot.val();
-    const div = document.createElement('div');
-    div.className = 'messageTile';
-    div.style.backgroundColor = data.color;
-    div.style.color = data.textColor;
-    div.style.transform = `rotate(${Math.random()*4-2}deg)`;
-
-    div.innerHTML = `
-        <strong>To ${data.name}:</strong>
-        ${data.message}
-        ${data.fromName ? `<br><div class="signature">— ${data.fromName}</div>` : ""}
-        <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
+  db.ref('messages').on('child_added', snap=>{
+    const d=snap.val();
+    const div=document.createElement('div');
+    div.className='messageTile';
+    div.style.backgroundColor=d.color||'#fff';
+    div.style.color=d.textColor||'#333';
+    div.style.transform=`rotate(${Math.random()*4-2}deg)`;
+    div.innerHTML=`
+      <strong>To ${escapeHtml(d.name)}:</strong>
+      ${escapeHtml(d.message)}
+      ${d.fromName?`<br><div class="signature">— ${escapeHtml(d.fromName)}</div>`:""}
+      <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
     `;
-
-    div.addEventListener('click', () => {
-        const popup = document.getElementById('popup');
-        const popupMessage = document.getElementById('popupMessage');
-        const popupCard = document.getElementById('popupCard');
-
-        popupMessage.innerHTML = `
-            <strong>To ${data.name}</strong>
-            <p>${data.message}</p>
-            ${data.fromName ? `<p class="signature">— ${data.fromName}</p>` : ""}
-            <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
-        `;
-        popupCard.style.backgroundColor = data.color;
-        popupCard.style.color = data.textColor;
-
-        popupCard.classList.remove('popup-show');
-        void popupCard.offsetWidth;
-        popupCard.classList.add('popup-show');
-
-        popup.style.display = 'flex';
+    div.addEventListener('click',()=>{
+      const popup=document.getElementById('popup');
+      const popupMessage=document.getElementById('popupMessage');
+      const popupCard=document.getElementById('popupCard');
+      popupMessage.innerHTML=`
+        <strong>To ${escapeHtml(d.name)}</strong>
+        <p>${escapeHtml(d.message)}</p>
+        ${d.fromName?`<p class="signature">— ${escapeHtml(d.fromName)}</p>`:""}
+        <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
+      `;
+      popupCard.style.backgroundColor=d.color||'#fff';
+      popupCard.style.color=d.textColor||'#333';
+      popupCard.classList.remove('popup-show');
+      void popupCard.offsetWidth;
+      popupCard.classList.add('popup-show');
+      popup.style.display='flex';
     });
-
     messagesContainer.prepend(div);
-});
+  });
 
-document.getElementById('popupClose').addEventListener('click', () => {
-    document.getElementById('popup').style.display = 'none';
-});
-document.getElementById('popup').addEventListener('click', (e) => {
-    if(e.target.id === 'popup') document.getElementById('popup').style.display = 'none';
-});
+  document.getElementById('popupClose').addEventListener('click',()=>document.getElementById('popup').style.display='none');
+  document.getElementById('popup').addEventListener('click',e=>{
+    if(e.target.id==='popup')document.getElementById('popup').style.display='none';
+  });
 
-fetch("https://ipapi.co/json/")
-  .then(response => response.json())
-  .then(data => {
-    const visitData = {
-      ip: data.ip,
-      city: data.city,
-      region: data.region,
-      country: data.country_name,
-      userAgent: navigator.userAgent,
-      time: new Date().toISOString()
-    };
-    db.ref("visits").push(visitData);
-    console.log("Visitor logged:", visitData);
-  })
-  .catch(err => console.error("Visitor log error:", err));
+  fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
+    const visit={ip:data.ip,city:data.city,region:data.region,country:data.country_name,userAgent:navigator.userAgent,time:new Date().toISOString()};
+    db.ref("visits").push(visit);
+    console.log("Visitor logged:",visit);
+  }).catch(err=>console.error("Visitor log error:",err));
+}
+
+function escapeHtml(t){
+  return String(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
 </script>
-
 </body>
 </html>

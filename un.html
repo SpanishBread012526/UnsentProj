@@ -6,138 +6,177 @@
 <title>proj-2-pola</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
-/* Pop-in animation */
 @keyframes popIn {
-    0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
-    70% { transform: scale(1.05) rotate(2deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+  70% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 .popup-show { animation: popIn 0.4s ease forwards; }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #fdf6f0;
-    margin: 20px;
-    padding: 10px;
-    color: #333;
+  font-family: Arial, sans-serif;
+  background-color: #fdf6f0;
+  margin: 20px;
+  padding: 10px;
+  color: #333;
 }
 h1 {
-    text-align: center;
-    color: #b34747;
-    font-size: 1.8em;
+  text-align: center;
+  color: #b34747;
+  font-size: 1.8em;
 }
 form {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 input, textarea, button {
-    font-size: 16px;
-    padding: 10px;
-    margin-bottom: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 button {
-    cursor: pointer;
-    background-color: #b34747;
-    color: white;
-    border: none;
+  cursor: pointer;
+  background-color: #b34747;
+  color: white;
+  border: none;
 }
 #messagesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
 }
-
-/* Polaroid card style */
 .messageTile {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom: 20px solid #fff;
-    border-radius: 5px;
-    box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
-    padding: 15px;
-    width: 90%;
-    max-width: 300px;
-    font-family: 'Patrick Hand', cursive;
-    position: relative;
-    transition: transform 0.2s;
-    word-wrap: break-word;
-    cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom: 20px solid #fff;
+  border-radius: 5px;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
+  padding: 15px;
+  width: 90%;
+  max-width: 300px;
+  font-family: 'Patrick Hand', cursive;
+  position: relative;
+  transition: transform 0.2s;
+  word-wrap: break-word;
+  cursor: pointer;
 }
 .messageTile:hover { transform: rotate(-1.5deg) scale(1.02); }
 .messageTile strong { display: block; margin-bottom: 8px; }
 .timestamp {
-    text-align: right;
-    font-size: 12px;
-    color: #555;
-    margin-top: 10px;
-    word-break: break-word;
+  text-align: right;
+  font-size: 12px;
+  color: #555;
+  margin-top: 10px;
+  word-break: break-word;
 }
 .signature {
-    font-size: 14px;
-    font-style: italic;
-    margin-top: 6px;
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 6px;
 }
 @media (min-width: 500px) { .messageTile { width: 45%; } }
 @media (min-width: 800px) { .messageTile { width: 30%; } }
 
-/* Popup modal Polaroid-style */
 #popup {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center; align-items: center;
-    z-index: 1000;
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center; align-items: center;
+  z-index: 1000;
 }
 #popupCard {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom: 20px solid #fff;
-    border-radius: 5px;
-    box-shadow: 2px 2px 20px rgba(0,0,0,0.3);
-    padding: 20px;
-    width: 90%;
-    max-width: 320px;
-    font-family: 'Patrick Hand', cursive;
-    transform: rotate(-2deg);
-    cursor: default;
-    position: relative;
-    word-wrap: break-word;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom: 20px solid #fff;
+  border-radius: 5px;
+  box-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+  font-family: 'Patrick Hand', cursive;
+  transform: rotate(-2deg);
+  cursor: default;
+  position: relative;
+  word-wrap: break-word;
 }
 #popupClose {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 22px;
-    cursor: pointer;
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 22px;
+  cursor: pointer;
 }
 #popupMessage { white-space: pre-wrap; }
+
+/* 🌙 Gate Style */
+#gate {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: #fdf6f0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  z-index: 2000;
+  font-family: 'Patrick Hand', cursive;
+}
+#gate input {
+  border: none;
+  border-bottom: 2px solid #b34747;
+  background: transparent;
+  padding: 6px;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 10px;
+  outline: none;
+}
+#gate button {
+  margin-top: 12px;
+  background-color: #b34747;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+#gate button:hover { background-color: #963c3c; }
+#gateMessage { color: crimson; margin-top: 10px; }
 </style>
 </head>
 <body>
 
-<h1>notes?</h1>
+<!-- 🌙 Secret Word Gate -->
+<div id="gate">
+  <h2>“Before you enter, whisper the word that only the heart remembers.”</h2>
+  <input type="password" id="secretInput" placeholder="Enter the secret" />
+  <button onclick="checkSecret()">Enter</button>
+  <p id="gateMessage"></p>
+</div>
 
-<form id="messageForm">
-    <input type="text" id="name" placeholder="to whoo??" required>
-    <textarea id="message" placeholder="msgg heerree !!" required></textarea>
-    <input type="text" id="fromName" placeholder="from??" required>
-    <input type="color" id="color" value="#ffcccc"> Background Color
-    <input type="color" id="textColor" value="#333333"> Text Color
-    <button type="submit">submit !!</button>
-</form>
+<!-- 🌸 Main Site -->
+<div id="mainContent" style="display:none;">
+  <h1>replica-trial</h1>
 
-<div id="messagesContainer"></div>
+  <form id="messageForm">
+      <input type="text" id="name" placeholder="to whoo??" required>
+      <textarea id="message" placeholder="msgg heerree !!" required></textarea>
+      <input type="text" id="fromName" placeholder="from??" required>
+      <input type="color" id="color" value="#ffcccc"> Background Color
+      <input type="color" id="textColor" value="#333333"> Text Color
+      <button type="submit">submit !!</button>
+  </form>
 
-<!-- Popup modal -->
-<div id="popup">
-    <div class="popupContent" id="popupCard">
-        <span id="popupClose">&times;</span>
-        <div id="popupMessage"></div>
-    </div>
+  <div id="messagesContainer"></div>
+
+  <div id="popup">
+      <div class="popupContent" id="popupCard">
+          <span id="popupClose">&times;</span>
+          <div id="popupMessage"></div>
+      </div>
+  </div>
 </div>
 
 <!-- Firebase -->
@@ -145,6 +184,20 @@ button {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
+// 🌸 Secret Word Logic
+const secret = "hydrangeaheart"; // 🌷 change this to your own secret phrase
+
+function checkSecret() {
+  const input = document.getElementById("secretInput").value.trim();
+  const msg = document.getElementById("gateMessage");
+  if (input === secret) {
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+  } else {
+    msg.textContent = "The wind does not recognize that word.";
+  }
+}
+
 // 🔹 Firebase config 🔹
 const firebaseConfig = {
   apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
@@ -160,77 +213,73 @@ const db = firebase.database();
 const messagesContainer = document.getElementById('messagesContainer');
 const form = document.getElementById('messageForm');
 
-// Submit message
 form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const message = document.getElementById('message').value.trim();
-    const fromName = document.getElementById('fromName').value.trim();
-    const color = document.getElementById('color').value;
-    const textColor = document.getElementById('textColor').value;
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const message = document.getElementById('message').value.trim();
+  const fromName = document.getElementById('fromName').value.trim();
+  const color = document.getElementById('color').value;
+  const textColor = document.getElementById('textColor').value;
 
-    if(name && message && fromName){
-        db.ref('messages').push({
-            name,
-            message,
-            fromName,
-            color,
-            textColor,
-            timestamp: Date.now()
-        });
-        form.reset();
-    }
-});
-
-// Display messages as Polaroids
-db.ref('messages').on('child_added', snapshot => {
-    const data = snapshot.val();
-    const div = document.createElement('div');
-    div.className = 'messageTile';
-    div.style.backgroundColor = data.color;
-    div.style.color = data.textColor;
-    div.style.transform = `rotate(${Math.random()*4-2}deg)`;
-
-    div.innerHTML = `
-        <strong>To ${data.name}:</strong>
-        ${data.message}
-        ${data.fromName ? `<br><div class="signature">— ${data.fromName}</div>` : ""}
-        <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
-    `;
-
-    div.addEventListener('click', () => {
-        const popup = document.getElementById('popup');
-        const popupMessage = document.getElementById('popupMessage');
-        const popupCard = document.getElementById('popupCard');
-
-        popupMessage.innerHTML = `
-            <strong>To ${data.name}</strong>
-            <p>${data.message}</p>
-            ${data.fromName ? `<p class="signature">— ${data.fromName}</p>` : ""}
-            <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
-        `;
-        popupCard.style.backgroundColor = data.color;
-        popupCard.style.color = data.textColor;
-
-        popupCard.classList.remove('popup-show');
-        void popupCard.offsetWidth;
-        popupCard.classList.add('popup-show');
-
-        popup.style.display = 'flex';
+  if(name && message && fromName){
+    db.ref('messages').push({
+      name,
+      message,
+      fromName,
+      color,
+      textColor,
+      timestamp: Date.now()
     });
-
-    messagesContainer.prepend(div);
+    form.reset();
+  }
 });
 
-// Close popup
+db.ref('messages').on('child_added', snapshot => {
+  const data = snapshot.val();
+  const div = document.createElement('div');
+  div.className = 'messageTile';
+  div.style.backgroundColor = data.color;
+  div.style.color = data.textColor;
+  div.style.transform = `rotate(${Math.random()*4-2}deg)`;
+
+  div.innerHTML = `
+      <strong>To ${data.name}:</strong>
+      ${data.message}
+      ${data.fromName ? `<br><div class="signature">— ${data.fromName}</div>` : ""}
+      <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
+  `;
+
+  div.addEventListener('click', () => {
+      const popup = document.getElementById('popup');
+      const popupMessage = document.getElementById('popupMessage');
+      const popupCard = document.getElementById('popupCard');
+
+      popupMessage.innerHTML = `
+          <strong>To ${data.name}</strong>
+          <p>${data.message}</p>
+          ${data.fromName ? `<p class="signature">— ${data.fromName}</p>` : ""}
+          <div class="timestamp">${new Date(data.timestamp).toLocaleString()}</div>
+      `;
+      popupCard.style.backgroundColor = data.color;
+      popupCard.style.color = data.textColor;
+
+      popupCard.classList.remove('popup-show');
+      void popupCard.offsetWidth;
+      popupCard.classList.add('popup-show');
+
+      popup.style.display = 'flex';
+  });
+
+  messagesContainer.prepend(div);
+});
+
 document.getElementById('popupClose').addEventListener('click', () => {
-    document.getElementById('popup').style.display = 'none';
+  document.getElementById('popup').style.display = 'none';
 });
 document.getElementById('popup').addEventListener('click', (e) => {
-    if(e.target.id === 'popup') document.getElementById('popup').style.display = 'none';
+  if(e.target.id === 'popup') document.getElementById('popup').style.display = 'none';
 });
 
-// 🔹 Visitor logging (no alert) 🔹
 fetch("https://ipapi.co/json/")
   .then(response => response.json())
   .then(data => {
@@ -250,4 +299,3 @@ fetch("https://ipapi.co/json/")
 
 </body>
 </html>
-

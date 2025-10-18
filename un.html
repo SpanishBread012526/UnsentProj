@@ -97,9 +97,9 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 <!-- GATE -->
 <div id="gateOverlay">
   <div id="gateBox">
-    <h2>“Whisper the word that opens the world.”</h2>
-    <p>Only those who remember may step through.</p>
-    <input id="secretInput" type="password" placeholder="enter secret word" autocomplete="off" />
+    <h2>a word only you'd know.</h2>
+    <p>only those who remember may open:P.</p>
+    <input id="secretInput" type="password" placeholder="whats the secret word?:v" autocomplete="off" />
     <div id="gateButtons">
       <button class="gBtn" id="enterBtn">Enter</button>
       <button class="gBtn secondary" id="cancelBtn">Leave</button>
@@ -110,7 +110,7 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 
 <!-- MAIN CONTENT -->
 <div id="mainContent" class="hidden">
-  <h1>replica-trial</h1>
+  <h1>notes?</h1>
 
   <form id="messageForm">
       <input type="text" id="name" placeholder="to whoo??" required>
@@ -136,7 +136,7 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-const allowedSecrets = ["magnolia","spanishbread","naps","nanami","ok"];
+const allowedSecrets = ["magnolia","spanishbread","naps","nanami","ok","random"];
 
 const gateOverlay = document.getElementById('gateOverlay');
 const secretInput = document.getElementById('secretInput');
@@ -153,9 +153,9 @@ secretInput.addEventListener('keydown', e => {
 
 function attemptUnlock(){
   const val = (secretInput.value||"").trim();
-  if(!val){ gateMsg.textContent="Please say something first."; return; }
+  if(!val){ gateMsg.textContent="write something first lol."; return; }
   if(!allowedSecrets.includes(val)){
-    gateMsg.textContent="That word does not open this gate.";
+    gateMsg.textContent="what the frik is that-_-";
     secretInput.value=""; secretInput.focus(); return;
   }
   // Unlock
@@ -246,4 +246,5 @@ function escapeHtml(t){
 </script>
 </body>
 </html>
+
 

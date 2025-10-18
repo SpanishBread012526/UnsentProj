@@ -168,14 +168,15 @@ function attemptUnlock(){
 /* Initialize Firebase after unlock */
 function initFirebaseAndLoad(){
   const firebaseConfig = {
-    apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
-    authDomain: "project-18561.firebaseapp.com",
-    databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
-    projectId: "project-18561",
-    storageBucket: "project-18561.firebasestorage.app",
-    messagingSenderId: "113928961968",
-    appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
-  };
+  apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
+  authDomain: "project-18561.firebaseapp.com",
+  databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
+  projectId: "project-18561",
+  storageBucket: "project-18561.firebasestorage.app",
+  messagingSenderId: "113928961968",
+  appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
+};
+
   try { firebase.initializeApp(firebaseConfig); } catch(e){ console.warn(e); }
   const db = firebase.database();
   const form = document.getElementById('messageForm');
@@ -245,3 +246,4 @@ function escapeHtml(t){
 </script>
 </body>
 </html>
+

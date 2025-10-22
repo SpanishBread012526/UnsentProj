@@ -64,52 +64,12 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 }
 #popupClose { position:absolute; top:10px; right:15px; font-size:22px; cursor:pointer; }
 #popupMessage { white-space: pre-wrap; }
-
-/* ====== gate ====== */
-#gateOverlay {
-  position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
-  background: linear-gradient(180deg, rgba(253,246,240,0.98), rgba(250,244,249,0.98));
-  z-index:2000; font-family:'Patrick Hand', cursive;
-}
-#gateBox {
-  width: 92%; max-width:420px; background: #fff; border-radius: 12px; padding: 24px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15); text-align:center;
-  border: 1px solid #f0e6e8; animation: fadeInSoft 0.6s ease;
-}
-#gateBox h2 { margin:0 0 8px 0; color:#7a2f2f; font-size:20px; }
-#gateBox p { margin: 0 0 12px 0; color:#6b4a4a; }
-#secretInput {
-  width:100%; padding:10px; border-radius:8px; border:1px solid #e0cbd0;
-  text-align:center; font-size:16px;
-}
-#gateMsg { color:crimson; margin-top:10px; min-height:1.2em; }
-#gateButtons { margin-top:12px; display:flex; gap:8px; justify-content:center; }
-.gBtn { padding:8px 14px; border-radius:8px; border:none; cursor:pointer;
-  background:#b34747; color:white; transition:opacity 0.3s ease; }
-.gBtn:hover { opacity:0.8; }
-.gBtn.secondary { background:#e6cbd0; color:#5b2b2b; }
-.hidden { display:none !important; }
-.fade-in { animation: fadeInSoft 0.7s ease forwards; }
 </style>
 </head>
 <body>
 
-<!-- GATE -->
-<div id="gateOverlay">
-  <div id="gateBox">
-    <h2>any word that you might think that's the pass. might be nicknames or wtv</h2>
-    <p> clued with numbers of missing letters: m(7),s(11),n(3),n(5),o(1),r(5).</p>
-    <input id="secretInput" type="password" placeholder="whats the secret word?:v" autocomplete="off" />
-    <div id="gateButtons">
-      <button class="gBtn" id="enterBtn">Enter</button>
-      <button class="gBtn secondary" id="cancelBtn">Leave</button>
-    </div>
-    <div id="gateMsg"></div>
-  </div>
-</div>
-
 <!-- MAIN CONTENT -->
-<div id="mainContent" class="hidden">
+<div id="mainContent">
   <h1>notes?</h1>
 
   <form id="messageForm">
@@ -136,36 +96,6 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-const allowedSecrets = ["magnolia","spanishbread","naps","nanami","ok","random"];
-
-const gateOverlay = document.getElementById('gateOverlay');
-const secretInput = document.getElementById('secretInput');
-const gateMsg = document.getElementById('gateMsg');
-const mainContent = document.getElementById('mainContent');
-
-document.getElementById('enterBtn').addEventListener('click', attemptUnlock);
-document.getElementById('cancelBtn').addEventListener('click', () => {
-  document.body.innerHTML = "<h2 style='text-align:center;margin-top:40vh;font-family:sans-serif;'>Goodbye.</h2>";
-});
-secretInput.addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); attemptUnlock(); }
-});
-
-function attemptUnlock(){
-  const val = (secretInput.value||"").trim();
-  if(!val){ gateMsg.textContent="write something first lol."; return; }
-  if(!allowedSecrets.includes(val)){
-    gateMsg.textContent="what the frik is that-_-";
-    secretInput.value=""; secretInput.focus(); return;
-  }
-  // Unlock
-  gateOverlay.style.display='none';
-  mainContent.classList.remove('hidden');
-  mainContent.classList.add('fade-in');
-  initFirebaseAndLoad();
-}
-
-/* Initialize Firebase after unlock */
 function initFirebaseAndLoad(){
   const firebaseConfig = {
   apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
@@ -243,10 +173,8 @@ function initFirebaseAndLoad(){
 function escapeHtml(t){
   return String(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
+
+initFirebaseAndLoad();
 </script>
 </body>
 </html>
-
-
-
-

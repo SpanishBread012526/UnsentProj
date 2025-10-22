@@ -134,7 +134,7 @@ function initFirebaseAndLoad(){
     div.style.transform=`rotate(${Math.random()*4-2}deg)`;
     div.innerHTML=`
       <strong>To ${escapeHtml(d.name)}:</strong>
-      ${escapeHtml(d.message)}
+      ${escapeHtml(d.message).replace(/\n/g, "<br>")}
       ${d.fromName?`<br><div class="signature">— ${escapeHtml(d.fromName)}</div>`:""}
       <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
     `;
@@ -144,7 +144,7 @@ function initFirebaseAndLoad(){
       const popupCard=document.getElementById('popupCard');
       popupMessage.innerHTML=`
         <strong>To ${escapeHtml(d.name)}</strong>
-        <p>${escapeHtml(d.message)}</p>
+        <p>${escapeHtml(d.message).replace(/\n/g, "<br>")}</p>
         ${d.fromName?`<p class="signature">— ${escapeHtml(d.fromName)}</p>`:""}
         <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
       `;

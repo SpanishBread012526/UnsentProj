@@ -49,31 +49,6 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 .messageTile strong { display: block; margin-bottom: 8px; }
 .timestamp { text-align: right; font-size: 12px; color: #555; margin-top: 10px; word-break: break-word; }
 .signature { font-size: 14px; font-style: italic; margin-top: 6px; }
-
-/* ⭐ ADDED — Reaction Bar */
-.reactionBar {
-  margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(0,0,0,0.2);
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  font-size: 22px;
-}
-.reactOption {
-  cursor: pointer;
-  opacity: 0.7;
-  transition: transform 0.2s, opacity 0.2s;
-}
-.reactOption:hover {
-  transform: scale(1.2);
-  opacity: 1;
-}
-.currentReaction {
-  margin-left: auto;
-  font-size: 24px;
-}
-
 @media (min-width:500px){ .messageTile{ width:45%; } } 
 @media (min-width:800px){ .messageTile{ width:30%; } }
 
@@ -93,6 +68,7 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 </head>
 <body>
 
+<!-- MAIN CONTENT -->
 <div id="mainContent">
   <h1>notes?</h1>
 
@@ -122,14 +98,14 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 <script>
 function initFirebaseAndLoad(){
   const firebaseConfig = {
-    apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
-    authDomain: "project-18561.firebaseapp.com",
-    databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
-    projectId: "project-18561",
-    storageBucket: "project-18561.firebasestorage.app",
-    messagingSenderId: "113928961968",
-    appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
-  };
+  apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
+  authDomain: "project-18561.firebaseapp.com",
+  databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
+  projectId: "project-18561",
+  storageBucket: "project-18561.firebasestorage.app",
+  messagingSenderId: "113928961968",
+  appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
+};
 
   try { firebase.initializeApp(firebaseConfig); } catch(e){ console.warn(e); }
   const db = firebase.database();
@@ -156,45 +132,19 @@ function initFirebaseAndLoad(){
     div.style.backgroundColor=d.color||'#fff';
     div.style.color=d.textColor||'#333';
     div.style.transform=`rotate(${Math.random()*4-2}deg)`;
-
     div.innerHTML=`
       <strong>To ${escapeHtml(d.name)}:</strong>
-      ${escapeHtml(d.message).replace(/\\n/g, "<br>")}
+      ${escapeHtml(d.message).replace(/\n/g, "<br>")}
       ${d.fromName?`<br><div class="signature">— ${escapeHtml(d.fromName)}</div>`:""}
       <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
-
-      <!-- ⭐ REACTION BAR: Only ❤️ 😓 🙂 🫡 🥲 👍 -->
-      <div class="reactionBar">
-        <span class="reactOption" data-type="❤️">❤️</span>
-        <span class="reactOption" data-type="😓">😓</span>
-        <span class="reactOption" data-type="🙂">🙂</span>
-        <span class="reactOption" data-type="🫡">🫡</span>
-        <span class="reactOption" data-type="🥲">🥲</span>
-        <span class="reactOption" data-type="👍">👍</span>
-        <span class="currentReaction"></span>
-      </div>
     `;
-
-    const reactionRef = db.ref(`messages/${snap.key}/reaction`);
-    div.querySelectorAll(".reactOption").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const chosen = btn.getAttribute("data-type");
-        reactionRef.set(chosen);
-      });
-    });
-
-    reactionRef.on("value", rSnap=>{
-      const reaction = rSnap.val();
-      div.querySelector(".currentReaction").textContent = reaction ? reaction : "";
-    });
-
     div.addEventListener('click',()=>{
       const popup=document.getElementById('popup');
       const popupMessage=document.getElementById('popupMessage');
       const popupCard=document.getElementById('popupCard');
       popupMessage.innerHTML=`
         <strong>To ${escapeHtml(d.name)}</strong>
-        <p>${escapeHtml(d.message).replace(/\\n/g, "<br>")}</p>
+        <p>${escapeHtml(d.message).replace(/\n/g, "<br>")}</p>
         ${d.fromName?`<p class="signature">— ${escapeHtml(d.fromName)}</p>`:""}
         <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
       `;
@@ -205,7 +155,6 @@ function initFirebaseAndLoad(){
       popupCard.classList.add('popup-show');
       popup.style.display='flex';
     });
-
     messagesContainer.prepend(div);
   });
 
@@ -213,6 +162,12 @@ function initFirebaseAndLoad(){
   document.getElementById('popup').addEventListener('click',e=>{
     if(e.target.id==='popup')document.getElementById('popup').style.display='none';
   });
+
+  fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
+    const visit={ip:data.ip,city:data.city,region:data.region,country:data.country_name,userAgent:navigator.userAgent,time:new Date().toISOString()};
+    db.ref("visits").push(visit);
+    console.log("Visitor logged:",visit);
+  }).catch(err=>console.error("Visitor log error:",err));
 }
 
 function escapeHtml(t){

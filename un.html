@@ -163,16 +163,18 @@ function initFirebaseAndLoad(){
       ${d.fromName?`<br><div class="signature">— ${escapeHtml(d.fromName)}</div>`:""}
       <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
 
-      <!-- ⭐ ADDED: Reaction Bar -->
+      <!-- ⭐ REACTION BAR: Only ❤️ 😓 🙂 🫡 🥲 👍 -->
       <div class="reactionBar">
         <span class="reactOption" data-type="❤️">❤️</span>
-        <span class="reactOption" data-type="⭐">⭐</span>
-        <span class="reactOption" data-type="😊">😊</span>
+        <span class="reactOption" data-type="😓">😓</span>
+        <span class="reactOption" data-type="🙂">🙂</span>
+        <span class="reactOption" data-type="🫡">🫡</span>
+        <span class="reactOption" data-type="🥲">🥲</span>
+        <span class="reactOption" data-type="👍">👍</span>
         <span class="currentReaction"></span>
       </div>
     `;
 
-    /* ⭐ ADDED: Reaction logic */
     const reactionRef = db.ref(`messages/${snap.key}/reaction`);
     div.querySelectorAll(".reactOption").forEach(btn=>{
       btn.addEventListener("click", ()=>{
@@ -186,7 +188,6 @@ function initFirebaseAndLoad(){
       div.querySelector(".currentReaction").textContent = reaction ? reaction : "";
     });
 
-    /* POPUP */
     div.addEventListener('click',()=>{
       const popup=document.getElementById('popup');
       const popupMessage=document.getElementById('popupMessage');

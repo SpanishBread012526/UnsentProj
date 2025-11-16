@@ -49,30 +49,33 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 .messageTile strong { display: block; margin-bottom: 8px; }
 .timestamp { text-align: right; font-size: 12px; color: #555; margin-top: 10px; word-break: break-word; }
 .signature { font-size: 14px; font-style: italic; margin-top: 6px; }
+
+/* ⭐ ADDED — Reaction Bar */
+.reactionBar {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.2);
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 22px;
+}
+.reactOption {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.reactOption:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+.currentReaction {
+  margin-left: auto;
+  font-size: 24px;
+}
+
 @media (min-width:500px){ .messageTile{ width:45%; } } 
 @media (min-width:800px){ .messageTile{ width:30%; } }
-
-/* ===== reactions ===== */
-.reactionBar {
-  margin-top: 10px;
-  font-size: 20px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  user-select: none;
-}
-.reactBtn {
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.reactBtn:hover {
-  transform: scale(1.25);
-}
-.reactCount {
-  margin-left: auto;
-  font-size: 14px;
-  color: #444;
-}
 
 /* ====== popup ====== */
 #popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%;
@@ -90,7 +93,6 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 </head>
 <body>
 
-<!-- MAIN CONTENT -->
 <div id="mainContent">
   <h1>notes?</h1>
 
@@ -120,14 +122,14 @@ button { cursor: pointer; background-color: #b34747; color: white; border: none;
 <script>
 function initFirebaseAndLoad(){
   const firebaseConfig = {
-  apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
-  authDomain: "project-18561.firebaseapp.com",
-  databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
-  projectId: "project-18561",
-  storageBucket: "project-18561.firebasestorage.app",
-  messagingSenderId: "113928961968",
-  appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
-};
+    apiKey: "AIzaSyBKXqAHwLuQY-Ka7LbLsfAg0_7aAKu0wSE",
+    authDomain: "project-18561.firebaseapp.com",
+    databaseURL: "https://project-18561-default-rtdb.firebaseio.com",
+    projectId: "project-18561",
+    storageBucket: "project-18561.firebasestorage.app",
+    messagingSenderId: "113928961968",
+    appId: "1:113928961968:web:fe15c2c34cff87f4f52075"
+  };
 
   try { firebase.initializeApp(firebaseConfig); } catch(e){ console.warn(e); }
   const db = firebase.database();
@@ -155,35 +157,43 @@ function initFirebaseAndLoad(){
     div.style.color=d.textColor||'#333';
     div.style.transform=`rotate(${Math.random()*4-2}deg)`;
 
-    /* added reactions bar */
-    const reactionBarHTML = `
+    div.innerHTML=`
+      <strong>To ${escapeHtml(d.name)}:</strong>
+      ${escapeHtml(d.message).replace(/\\n/g, "<br>")}
+      ${d.fromName?`<br><div class="signature">— ${escapeHtml(d.fromName)}</div>`:""}
+      <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
+
+      <!-- ⭐ ADDED: Reaction Bar -->
       <div class="reactionBar">
-        <span class="reactBtn" data-type="heart">❤️</span>
-        <span class="reactBtn" data-type="sad">😓</span>
-        <span class="reactBtn" data-type="smile">🙂</span>
-        <span class="reactBtn" data-type="salute">🫡</span>
-        <span class="reactBtn" data-type="teary">🥲</span>
-        <span class="reactBtn" data-type="thumb">👍</span>
-        <span class="reactionCount"></span>
+        <span class="reactOption" data-type="❤️">❤️</span>
+        <span class="reactOption" data-type="⭐">⭐</span>
+        <span class="reactOption" data-type="😊">😊</span>
+        <span class="currentReaction"></span>
       </div>
     `;
 
-    div.innerHTML=`
-      <strong>To ${escapeHtml(d.name)}:</strong>
-      ${escapeHtml(d.message).replace(/\n/g, "<br>")}
-      ${d.fromName?`<br><div class="signature">— ${escapeHtml(d.fromName)}</div>`:""}
-      ${reactionBarHTML}
-      <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
-    `;
+    /* ⭐ ADDED: Reaction logic */
+    const reactionRef = db.ref(`messages/${snap.key}/reaction`);
+    div.querySelectorAll(".reactOption").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const chosen = btn.getAttribute("data-type");
+        reactionRef.set(chosen);
+      });
+    });
 
-    /* popup */
+    reactionRef.on("value", rSnap=>{
+      const reaction = rSnap.val();
+      div.querySelector(".currentReaction").textContent = reaction ? reaction : "";
+    });
+
+    /* POPUP */
     div.addEventListener('click',()=>{
       const popup=document.getElementById('popup');
       const popupMessage=document.getElementById('popupMessage');
       const popupCard=document.getElementById('popupCard');
       popupMessage.innerHTML=`
         <strong>To ${escapeHtml(d.name)}</strong>
-        <p>${escapeHtml(d.message).replace(/\n/g, "<br>")}</p>
+        <p>${escapeHtml(d.message).replace(/\\n/g, "<br>")}</p>
         ${d.fromName?`<p class="signature">— ${escapeHtml(d.fromName)}</p>`:""}
         <div class="timestamp">${new Date(d.timestamp).toLocaleString()}</div>
       `;
@@ -195,26 +205,6 @@ function initFirebaseAndLoad(){
       popup.style.display='flex';
     });
 
-    /* handle reactions */
-    const reactionsRef = db.ref(`messages/${snap.key}/reactions`);
-    div.querySelectorAll(".reactBtn").forEach(btn=>{
-      btn.addEventListener("click", (e)=>{
-        e.stopPropagation(); 
-        const type = btn.dataset.type;
-        reactionsRef.child(type).transaction(count => (count||0)+1);
-      });
-    });
-
-    /* update counts live */
-    reactionsRef.on("value", rSnap=>{
-      const v = rSnap.val() || {};
-      const total = 
-        (v.heart||0)+(v.sad||0)+(v.smile||0)+
-        (v.salute||0)+(v.teary||0)+(v.thumb||0);
-      const countDiv = div.querySelector(".reactionCount");
-      countDiv.textContent = total>0 ? `✨ ${total}` : "";
-    });
-
     messagesContainer.prepend(div);
   });
 
@@ -222,11 +212,6 @@ function initFirebaseAndLoad(){
   document.getElementById('popup').addEventListener('click',e=>{
     if(e.target.id==='popup')document.getElementById('popup').style.display='none';
   });
-
-  fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
-    const visit={ip:data.ip,city:data.city,region:data.region,country:data.country_name,userAgent:navigator.userAgent,time:new Date().toISOString()};
-    db.ref("visits").push(visit);
-  }).catch(err=>console.error("Visitor log error:",err));
 }
 
 function escapeHtml(t){
